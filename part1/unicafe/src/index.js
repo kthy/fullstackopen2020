@@ -16,25 +16,26 @@ const App = () => {
       <Button whenClicked={addGood} text="good" />
       <Button whenClicked={addNeutral} text="neutral" />
       <Button whenClicked={addBad} text="bad" />
+      <h1>statistics</h1>
       <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   )
 }
 
-const Button = props => <button onClick={props.whenClicked}>{props.text}</button>
+const Button = ({whenClicked, text}) => <button onClick={whenClicked}>{text}</button>
 
-const Display = props => <div>{props.name} {props.value}</div>
+const Display = ({name, value}) => <div>{name} {value}</div>
 
 const Statistics = ({good, neutral, bad}) => {
   const all = good+neutral+bad
+  if (all===0) return (<p>No feedback given</p>)
   return [
-    <h1>statistics</h1>,
-    <Display name="good" value={good} />,
-    <Display name="neutral" value={neutral} />,
-    <Display name="bad" value={bad} />,
-    <Display name="all" value={all} />,
-    <Display name="average" value={(good-bad)/all} />,
-    <Display name="positive" value={good/all*100+'%'} />,
+    <Display key="good" name="good" value={good} />,
+    <Display key="neutral" name="neutral" value={neutral} />,
+    <Display key="bad" name="bad" value={bad} />,
+    <Display key="all" name="all" value={all} />,
+    <Display key="average" name="average" value={(good-bad)/all} />,
+    <Display key="positive" name="positive" value={good/all*100+'%'} />,
   ]
 }
 
