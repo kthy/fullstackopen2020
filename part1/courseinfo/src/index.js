@@ -1,32 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = (props) => {
-  return (
-    <h1>{props.course}</h1>
-  )
-}
-
-const Part = (props) => {
-  return (
-    <p key={props.idx}>{props.part} {props.exercises}</p>
-  )
-}
-
-const Content = (props) => {
-  let contents = []
-  for (let idx = 0; idx < props.parts.length; idx++) {
-    contents.push(<Part key={idx} part={props.parts[idx]} exercises={props.exercises[idx]} />)
-  }
-  return contents
-}
-
-const Total = (props) => {
-  return (
-    <p>Number of exercises {props.exercises.reduce((a, b) => a + b, 0)}</p>
-  )
-}
-
 const App = () => {
   const course = 'Half Stack application development'
   const part1 = 'Fundamentals of React'
@@ -44,6 +18,36 @@ const App = () => {
       <Content parts={parts} exercises={exercises} />
       <Total exercises={exercises} />
     </div>
+  )
+}
+
+const Content = (props) => {
+  console.log(props)
+  let contents = []
+  for (let idx = 0; idx < props.parts.length; idx++) {
+    contents.push(<Part key={idx} part={props.parts[idx]} exercises={props.exercises[idx]} />)
+  }
+  return contents
+}
+
+const Header = (props) => {
+  console.log(props)
+  return (
+    <h1>{props.course}</h1>
+  )
+}
+
+const Part = (props) => {
+  console.log(props)
+  return (
+    <p key={props.idx}>{props.part} {props.exercises}</p>
+  )
+}
+
+const Total = (props) => {
+  console.log(props)
+  return (
+    <p>Number of exercises {props.exercises.reduce((a, b) => a + b, 0)}</p>
   )
 }
 
