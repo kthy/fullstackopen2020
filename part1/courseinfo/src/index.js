@@ -7,10 +7,16 @@ const Header = (props) => {
   )
 }
 
+const Part = (props) => {
+  return (
+    <p key={props.idx}>{props.part} {props.exercises}</p>
+  )
+}
+
 const Content = (props) => {
   let contents = []
   for (let idx = 0; idx < props.parts.length; idx++) {
-    contents.push(<p key={idx}>{props.parts[idx]} {props.exercises[idx]}</p>)
+    contents.push(<Part idx={idx} part={props.parts[idx]} exercises={props.exercises[idx]} />)
   }
   return contents
 }
