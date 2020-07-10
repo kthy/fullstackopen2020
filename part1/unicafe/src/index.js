@@ -24,19 +24,23 @@ const App = () => {
 
 const Button = ({whenClicked, text}) => <button onClick={whenClicked}>{text}</button>
 
-const Statistic = ({name, value}) => <div>{name} {value}</div>
+const Statistic = ({name, value}) => <tr><td>{name}</td><td>{value}</td></tr>
 
 const Statistics = ({good, neutral, bad}) => {
   const all = good+neutral+bad
   if (all===0) return (<p>No feedback given</p>)
-  return [
-    <Statistic key="good" name="good" value={good} />,
-    <Statistic key="neutral" name="neutral" value={neutral} />,
-    <Statistic key="bad" name="bad" value={bad} />,
-    <Statistic key="all" name="all" value={all} />,
-    <Statistic key="average" name="average" value={(good-bad)/all} />,
-    <Statistic key="positive" name="positive" value={good/all*100+'%'} />,
-  ]
+  return (
+    <table>
+      <tbody>
+        <Statistic key="good" name="good" value={good} />
+        <Statistic key="neutral" name="neutral" value={neutral} />
+        <Statistic key="bad" name="bad" value={bad} />
+        <Statistic key="all" name="all" value={all} />
+        <Statistic key="average" name="average" value={(good-bad)/all} />
+        <Statistic key="positive" name="positive" value={good/all*100+'%'} />
+      </tbody>
+    </table>
+  )
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
