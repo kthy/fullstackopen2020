@@ -16,7 +16,7 @@ const Part = (props) => {
 const Content = (props) => {
   let contents = []
   for (let idx = 0; idx < props.parts.length; idx++) {
-    contents.push(<Part idx={idx} part={props.parts[idx]} exercises={props.exercises[idx]} />)
+    contents.push(<Part key={idx} part={props.parts[idx]} exercises={props.exercises[idx]} />)
   }
   return contents
 }
