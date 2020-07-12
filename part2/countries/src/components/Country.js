@@ -1,4 +1,5 @@
 import React from 'react'
+import Weather from './Weather'
 
 const Country = ({ c }) => {
   return (
@@ -8,9 +9,10 @@ const Country = ({ c }) => {
       <div>population {c.population}</div>
       <h3>languages</h3>
       <ul>
-        {c.languages.map(l => <li>{l.name}</li>)}
+        {c.languages.map(l => <li key={l.name}>{l.name}</li>)}
       </ul>
       <img width="128px" src={c.flag} alt={`Flag of ${c.name}`} />
+      <Weather country={c.name} capital={c.capital} />
     </div>
   )
 }
