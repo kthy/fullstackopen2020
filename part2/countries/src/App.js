@@ -6,17 +6,20 @@ import Filter from './components/Filter'
 const App = () => {
   const [ countries, setCountries ] = useState([])
   const [ filter, setFilter ] = useState('')
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value)
+
+  const handleFilterChange = (event) => loadCountryData(event.target.value)
+
+  const loadCountryData = (c) => {
+    setFilter(c)
     axios
-      .get(`https://restcountries.eu/rest/v2/name/${event.target.value}`)
+      .get(`https://restcountries.eu/rest/v2/name/${c}`)
       .then(response => setCountries(response.data))
   }
 
   return (
     <div>
       <Filter value={filter} onChange={handleFilterChange} />
-      <Display countries={countries} />
+      <Display countries={countries} callback={loadCountryData} />
     </div>
   )
 }
