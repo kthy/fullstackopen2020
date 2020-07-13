@@ -10,13 +10,13 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('+45 ')
   const [ nameFilter, setNameFilter ] = useState('A')
 
-  const hook = () => {
+  const getAllPersons = () => {
     personSvc
       .getAll()
       .then(ps => setPersons(ps))
   }
 
-  useEffect(hook, [])
+  useEffect(getAllPersons, [])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -38,6 +38,16 @@ const App = () => {
         setNewName('')
         setNewNumber('+45 ')
       })
+  }
+
+  const deletePerson = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      if (personSvc.dellete(person.id)) {
+        setPersons(persons.filter(p => p.id !== person.id))
+      } else {
+        alert(`Error deleting ${person.name}`)
+      }
+    }
   }
 
   const handleFilterChange = (event) => setNameFilter(event.target.value)
@@ -62,7 +72,7 @@ const App = () => {
         onNumberChange={handleNumberChange} />
 
       <h2>Numbers</h2>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} del={deletePerson} />
     </div>
   )
 }
