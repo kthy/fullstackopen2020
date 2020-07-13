@@ -13,7 +13,7 @@ const create = newObject => {
 
 const dellete = id => {
   const request = axios.delete(`${baseUrl}/${id}`)
-  return request.then(_ => true).catch(_ => false)
+  return request.then(response => response.data)
 }
 
 const update = (id, newObject) => {

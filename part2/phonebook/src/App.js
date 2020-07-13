@@ -38,6 +38,11 @@ const App = () => {
             setNewName('')
             setNewNumber('+45 ')
           })
+          .catch(err => {
+            setNotificationIsError(true)
+            setNotificationMessage(`Error updating ${newName}`)
+            setTimeout(() => setNotificationMessage(null), 5000)
+          })
       }
     } else {
       const personObj = {
@@ -60,11 +65,14 @@ const App = () => {
 
   const deletePerson = (person) => {
     if (window.confirm(`Delete ${person.name}?`)) {
-      if (personSvc.dellete(person.id)) {
-        setPersons(persons.filter(p => p.id !== person.id))
-      } else {
-        alert(`Error deleting ${person.name}`)
-      }
+      personSvc
+        .dellete(person.id)
+        .then(_ => setPersons(persons.filter(p => p.id !== person.id)))
+        .catch(err => {
+          setNotificationIsError(true)
+          setNotificationMessage(`Error deleting ${person.name}`)
+          setTimeout(() => setNotificationMessage(null), 5000)
+        })
     }
   }
 
