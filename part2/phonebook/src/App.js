@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import personSvc from './services/persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -11,27 +11,33 @@ const App = () => {
   const [ nameFilter, setNameFilter ] = useState('A')
 
   const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data))
+    personSvc
+      .getAll()
+      .then(ps => setPersons(ps))
   }
 
   useEffect(hook, [])
 
   const addPerson = (event) => {
     event.preventDefault()
+
     if (persons.find(p => p.name === newName)) {
       alert(`${newName} is already in the phonebook`)
       return
     }
-    const nameObject = {
+
+    const personObj = {
       name: newName,
       number: newNumber,
     }
 
-    setPersons(persons.concat(nameObject))
-    setNewName('')
-    setNewNumber('+45 ')
+    personSvc
+      .create(personObj)
+      .then(p => {
+        setPersons(persons.concat(p))
+        setNewName('')
+        setNewNumber('+45 ')
+      })
   }
 
   const handleFilterChange = (event) => setNameFilter(event.target.value)
