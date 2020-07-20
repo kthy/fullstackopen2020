@@ -38,7 +38,7 @@ const App = () => {
             setNewName('')
             setNewNumber('+45 ')
           })
-          .catch(err => {
+          .catch(_ => {
             setNotificationIsError(true)
             setNotificationMessage(`Error updating ${newName}`)
             setTimeout(() => setNotificationMessage(null), 5000)
@@ -59,6 +59,11 @@ const App = () => {
           setTimeout(() => setNotificationMessage(null), 5000)
           setNewName('')
           setNewNumber('+45 ')
+        })
+        .catch(err => {
+          setNotificationIsError(true)
+          setNotificationMessage(err.response.data.error)
+          setTimeout(() => setNotificationMessage(null), 5000)
         })
     }
   }
