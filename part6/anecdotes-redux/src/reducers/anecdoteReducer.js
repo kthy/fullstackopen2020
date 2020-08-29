@@ -32,9 +32,18 @@ const anecdoteReducer = (state = initialState, action) => {
       newState.push(anecdote)
     })
     return newState
+  } else if (action.type === 'ADD') {
+    return [ ...state, asObject(action.data.anecdote) ]
   }
 
   return state
+}
+
+export const addAnecdote = (anecdote) => {
+  return {
+    type: 'ADD',
+    data: { anecdote }
+  }
 }
 
 export const voteFor = (id) => {
