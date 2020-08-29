@@ -31,15 +31,13 @@ const anecdoteReducer = (state = initialState, action) => {
       }
       newState.push(anecdote)
     })
-    return anecdotesOrderedByVotesDesc(newState)
+    return newState
   } else if (action.type === 'ADD') {
-    return anecdotesOrderedByVotesDesc([ ...state, asObject(action.data.anecdote) ])
+    return [ ...state, asObject(action.data.anecdote) ]
   }
 
-  return anecdotesOrderedByVotesDesc(state)
+  return state
 }
-
-const anecdotesOrderedByVotesDesc = (anecdotes) => [...anecdotes].sort((a, b) => b.votes - a.votes)
 
 export const addAnecdote = (anecdote) => {
   return {
