@@ -1,10 +1,28 @@
-const initialState = 'Hello world!'
+const initialState = ''
 
 const notificationReducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
+  let msg = state
 
-  return state
+  if (action.type === 'CLEAR') {
+    msg = ''
+  } else if (action.type === 'SET') {
+    msg = action.data.msg
+  }
+
+  return msg
+}
+
+export const clearNotification = () => {
+  return {
+    type: 'CLEAR'
+  }
+}
+
+export const setNotification = (msg) => {
+  return {
+    type: 'SET',
+    data: { msg }
+  }
 }
 
 export default notificationReducer
