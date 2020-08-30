@@ -3,9 +3,9 @@ const initialState = ''
 const notificationReducer = (state = initialState, action) => {
   let msg = state
 
-  if (action.type === 'CLEAR') {
+  if (action.type === 'CLEAR_NOTIFICATION') {
     msg = ''
-  } else if (action.type === 'SET') {
+  } else if (action.type === 'SET_NOTIFICATION') {
     msg = action.data.msg
   }
 
@@ -14,13 +14,13 @@ const notificationReducer = (state = initialState, action) => {
 
 export const clearNotification = () => {
   return {
-    type: 'CLEAR'
+    type: 'CLEAR_NOTIFICATION'
   }
 }
 
 export const setNotification = (msg) => {
   return {
-    type: 'SET',
+    type: 'SET_NOTIFICATION',
     data: { msg }
   }
 }
