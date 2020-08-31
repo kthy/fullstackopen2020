@@ -84,21 +84,23 @@ const CreateNew = (props) => {
     info.reset()
   }
 
+  const fieldWithoutReset = ({ reset, ...rest }) => rest
+
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input { ...content } />
+          <input { ...fieldWithoutReset(content) } />
         </div>
         <div>
           author
-          <input { ...author } />
+          <input { ...fieldWithoutReset(author) } />
         </div>
         <div>
           url for more info
-          <input { ...info } />
+          <input { ...fieldWithoutReset(info) } />
         </div>
         <button>create</button>
         <button type="button" onClick={resetFields}>reset</button>
