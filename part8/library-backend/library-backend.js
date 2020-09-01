@@ -92,16 +92,13 @@ const resolvers = {
       if (args.genre) {
         filterQuery = { ...filterQuery, genre: { $in: [args.genre] } }
       }
-      return Book.find(filterQuery)
+      return Book.find(filterQuery).populate('author')
     },
     authorCount: () => Author.collection.countDocuments(),
     bookCount: () => Book.collection.countDocuments(),
   },
   Author: {
     bookCount: (root) => Book.collection.countDocuments({ author: ObjectId(root._id) })
-  },
-  Book: {
-    author: (root) => Author.findById(root.author)
   }
 }
 
