@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
+import Notify from './Notify'
 import { ALL_AUTHORS, ALL_BOOKS, CREATE_BOOK } from '../queries'
 
 const NewBook = (props) => {
@@ -21,17 +22,6 @@ const NewBook = (props) => {
       }
     }
   })
-
-  const Notify = ({errorMessage}) => {
-    if ( !errorMessage ) {
-      return null
-    }
-    return (
-      <div style={{color: 'red'}}>
-        {errorMessage}
-      </div>
-    )
-  }
 
   const notify = (message) => {
     setErrorMessage(message)
