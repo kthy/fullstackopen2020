@@ -62,8 +62,24 @@ const typeDefs = gql`
 
 const resolvers = {
   Mutation: {
-    addAuthor: (_, args) => new Author({ ...args }).save(),
-    addBook: (_, args) => new Book({ ...args }).save(),
+    addAuthor: async (_, args) => {
+      const author = new Author({ ...args })
+      try {
+        await author.save()
+      } catch (error) {
+        throw new UserInputError(error.message, { invalidArgs: args })
+      }
+      return author
+    },
+    addBook: async (_, args) => {
+      const book = new Book({ ...args })
+      try {
+        await book.save()
+      } catch (error) {
+        throw new UserInputError(error.message, { invalidArgs: args })
+      }
+      return book
+    },
     editAuthor: (_, args) => Author.findOneAndUpdate({ name: args.name }, { born: args.setBornTo }, { new: true })
   },
   Query: {
