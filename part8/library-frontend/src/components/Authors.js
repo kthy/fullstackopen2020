@@ -4,7 +4,10 @@ const Authors = (props) => {
   if (!props.show) {
     return null
   }
-  const authors = []
+
+  if (props.result.loading)  {
+    return <div>loading authors...</div>
+  }
 
   return (
     <div>
@@ -20,8 +23,8 @@ const Authors = (props) => {
               books
             </th>
           </tr>
-          {authors.map(a =>
-            <tr key={a.name}>
+          {props.result.data.allAuthors.map(a =>
+            <tr key={a.id}>
               <td>{a.name}</td>
               <td>{a.born}</td>
               <td>{a.bookCount}</td>
