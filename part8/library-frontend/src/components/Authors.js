@@ -35,6 +35,12 @@ const Authors = (props) => {
     event.preventDefault()
 
     const setBornTo = Number(born)
+
+    if (!name) {
+      alert('Please select an author')
+      return
+    }
+
     if (!setBornTo) {
       alert('Please provide a birth year')
       return
@@ -79,10 +85,10 @@ const Authors = (props) => {
       <form onSubmit={submit}>
         <div>
           name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
+          <select value={name} onChange={({ target }) => setName(target.value)}>
+            <option key="00000000-0000-0000-0000-000000000000" value=""></option>
+            {props.result.data.allAuthors.map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+          </select>
         </div>
         <div>
           born
