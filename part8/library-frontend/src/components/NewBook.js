@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { ALL_AUTHORS, ALL_BOOKS, CREATE_BOOK } from '../queries'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -6,6 +8,37 @@ const NewBook = (props) => {
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  const [ createBook ] = useMutation(CREATE_BOOK, {
+    refetchQueries: [ { query: ALL_AUTHORS }, { query: ALL_BOOKS } ],
+    onError: (error) => {
+      if (error.graphQLErrors.length > 1) {
+        console.log('error.graphQLErrors', error.graphQLErrors)
+        notify(error.graphQLErrors[0].message)
+      } else {
+        notify(error.toString())
+      }
+    }
+  })
+
+  const Notify = ({errorMessage}) => {
+    if ( !errorMessage ) {
+      return null
+    }
+    return (
+      <div style={{color: 'red'}}>
+        {errorMessage}
+      </div>
+    )
+  }
+
+  const notify = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 10000)
+  }
 
   if (!props.show) {
     return null
@@ -14,7 +47,8 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    console.log('add book...')
+    const publishedAsIntOrNull = published ? Number(published) : null
+    createBook({ variables: { title, published: publishedAsIntOrNull, author, genres } })
 
     setTitle('')
     setPublished('')
@@ -30,6 +64,7 @@ const NewBook = (props) => {
 
   return (
     <div>
+      <Notify errorMessage={errorMessage} />
       <form onSubmit={submit}>
         <div>
           title
