@@ -7,7 +7,7 @@ const Books = (props) => {
     return null
   }
 
-  if (props.result.loading)  {
+  if (props.result.loading) {
     return <div>loading books...</div>
   }
 

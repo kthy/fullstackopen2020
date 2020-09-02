@@ -4,6 +4,7 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import Login from './components/Login'
 import NewBook from './components/NewBook'
+import Recommendations from './components/Recommendations'
 import { ALL_AUTHORS, ALL_BOOKS } from './queries'
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
 
   const authorsResult = useQuery(ALL_AUTHORS)
   const booksResult = useQuery(ALL_BOOKS)
+  const recommendationsResult = useQuery(ALL_BOOKS)
 
   const loggedIn = () => token !== null
 
@@ -30,6 +32,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')} hidden={!loggedIn()}>add book</button>
+        <button onClick={() => setPage('recommendations')} hidden={!loggedIn()}>recommendations</button>
         <button onClick={() => setPage('login')} hidden={loggedIn()}>login</button>
         <button onClick={logout} hidden={!loggedIn()}>logout</button>
       </div>
@@ -46,6 +49,11 @@ const App = () => {
       />
 
       <NewBook show={page === 'add'} />
+
+      <Recommendations
+        show={page === 'recommendations'}
+        result={recommendationsResult}
+      />
 
       <Login
         show={page === 'login'}
