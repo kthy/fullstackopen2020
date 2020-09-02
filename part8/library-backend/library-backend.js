@@ -2,6 +2,7 @@ const { ApolloServer, AuthenticationError, UserInputError, gql } = require('apol
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const ObjectId = require('mongoose').Types.ObjectId
+const { print } = require('graphql')
 const Author = require('./models/author')
 const Book = require('./models/book')
 const User = require('./models/user')
@@ -56,7 +57,7 @@ const typeDefs = gql`
     addBook(
       title: String!
       published: Int
-      author: String!
+      authorName: String!
       genres: [String!]!
     ): Book!
     createUser(
@@ -105,13 +106,19 @@ const resolvers = {
     addBook: async (_, args, context) => {
       throwIfNotAuthenticated(context)
 
-      const book = new Book({ ...args })
       try {
+        let author = await Author.findOne({ name: args.authorName })
+        if (!author) {
+          author = new Author({ name: args.name })
+          await author.save()
+        }
+
+        const book = new Book({ ...args, author })
         await book.save()
+        return book
       } catch (error) {
         throw new UserInputError(error.message, { invalidArgs: args })
       }
-      return book
     },
     createUser: async (_, args) => {
       const user = new User({ ...args })
@@ -160,9 +167,18 @@ const resolvers = {
   }
 }
 
+class BasicLogging {
+  requestDidStart({ queryString, parsedQuery, variables }) {
+    const query = queryString || print(parsedQuery)
+    console.log(query)
+    console.log(variables)
+  }
+}
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  extensions: [() => new BasicLogging()],
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
