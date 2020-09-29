@@ -5,7 +5,7 @@ import Books from './components/Books'
 import Login from './components/Login'
 import NewBook from './components/NewBook'
 import Recommendations from './components/Recommendations'
-import { ALL_AUTHORS, ALL_BOOKS } from './queries'
+import { ALL_AUTHORS, ALL_BOOKS, ME } from './queries'
 
 const App = () => {
   const client = useApolloClient()
@@ -15,7 +15,11 @@ const App = () => {
 
   const authorsResult = useQuery(ALL_AUTHORS)
   const booksResult = useQuery(ALL_BOOKS)
-  const recommendationsResult = useQuery(ALL_BOOKS)
+  const currentUser = useQuery(ME)
+
+  if (currentUser.loading) {
+    return <div>loading user from context...</div>
+  }
 
   const loggedIn = () => token !== null
 
@@ -52,7 +56,7 @@ const App = () => {
 
       <Recommendations
         show={page === 'recommendations'}
-        result={recommendationsResult}
+        currentUser={currentUser}
       />
 
       <Login

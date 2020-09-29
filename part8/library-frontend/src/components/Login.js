@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import Notify from './Notify'
-import { LOGIN } from '../queries'
+import { LOGIN, ME } from '../queries'
 
 const Login = ({ setPage, setToken, show }) => {
   const [username, setUsername] = useState('')
@@ -9,6 +9,7 @@ const Login = ({ setPage, setToken, show }) => {
   const [errorMessage, setErrorMessage] = useState(null)
 
   const [ login, result ] = useMutation(LOGIN, {
+    refetchQueries: [ { query: ME } ],
     onError: (error) => {
       if (error.graphQLErrors.length > 1) {
         console.log('error.graphQLErrors', error.graphQLErrors)
